@@ -132,11 +132,7 @@ I ran all 5 questions from `planning.md` through `python eval.py` on June 14, 20
 python3 -m venv .venv
 source .venv/bin/activate
 pip install -r requirements.txt
-cp .env.example .env   # add your Groq API key
-
-python ingest.py
-python embed.py
-python app.py          # web UI at http://localhost:7860
+ # web UI at http://localhost:7860
 
 # CLI:
 python main.py --cli "How is Mark Llewellyn's CNT4714 class graded?"
