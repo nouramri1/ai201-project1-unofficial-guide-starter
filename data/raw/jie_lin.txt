@@ -1,0 +1,31 @@
+Source: Rate My Professors
+URL: https://www.ratemyprofessors.com/professor/3129455
+Professor: Jie Lin
+Department: Computer Science
+School: University of Central Florida
+Overall Quality: 1.8 / 5
+Difficulty: 4.4 / 5
+Would Take Again: 20%
+Tags: Tough grader, Lecture heavy, Test heavy
+
+--- Reviews ---
+
+Review 1 (CIS3360, 2026-06-09):
+It's amazing how someone can come up with a class like this.The lectures has almost no meaningful material, the study guides are just fluff to say he did give practice to his class, two-thirds of the homework's were not helpful to security and the last one that was relevant,was given the last three weeks of class.Definitely a disappointing class.
+Tags: Lecture heavy, Test heavy, Graded by few things
+
+Review 2 (COP3402, 2026-05-27):
+No partial credit, inconsiderate and is determined to fail you. Avoid
+Tags: Tough grader
+
+Review 3 (CIS3360, 2026-05-07):
+if you havent taken CS1 good luck, his assignments use concepts of C programming that are not taught at all in his class, and he's also just a super condescending and dismissive guy. someone asked what do I do if I don't know how to code well for the assignment? He said and I quote "now is a great time to learn"
+Tags: Tough grader, Lecture heavy, Test heavy
+
+Review 4 (CIS3360, 2026-05-06):
+He did make efforts to improve over the course of the semester. However, he mostly read off the slides, was not very accessible outside class and test were hard to study for essentially having to just memorize a large amount powerpoint slides. Not enough time to solve application questions for test. Did give extra credit for attendance.
+Tags: Lecture heavy, Test heavy
+
+Review 5 (CIS3360, 2026-05-13):
+Really bad, do not recommend at all.
+Tags: Tough grader, Lecture heavy, Test heavy

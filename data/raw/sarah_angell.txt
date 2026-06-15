@@ -1,0 +1,31 @@
+Source: Rate My Professors
+URL: https://www.ratemyprofessors.com/professor/1583836
+Professor: Sarah Angell
+Department: Computer Science
+School: University of Central Florida
+Overall Quality: 3.7 / 5
+Difficulty: 2.9 / 5
+Would Take Again: 78%
+Tags: Clear grading criteria, Participation matters, EXTRA CREDIT
+
+--- Reviews ---
+
+Review 1 (COP2500C, 2026-06-06):
+She's very friendly and explains things slowly (sometimes too slowly) for students. The class is very easy so long as you do the work, tests are accurate to what is taught as well. I hardly attended lectures but had no problem using the resources she provides to catch up. Great teacher and format. Grading is fair.
+Tags: Participation matters, EXTRA CREDIT, Clear grading criteria
+
+Review 2 (COP2500C, 2026-05-07):
+I personally did not enjoy professor Angell's class. She goes through the material very fast and it is hard to keep up. She also doesn't explain some concepts thoroughly. The midterm and final can each be taken twice so that is fine overall. The homework is hard and a simple extra letter can get you 25 points deducted, so that is a downside.
+Tags: (mixed)
+
+Review 3 (COP2500C, 2026-05-06):
+I LOVED THIS CLASS. She made coding so enjoyable for me that I changed my major to Computer Engineering. She is an absolutely amazing professor. The class is entirely just lectures with weekly assignments and labs. Nothing hard at all. Two attempts on the one midterm and final. But you probably won't even need it. Super easy and super fun. Enjoy!!!
+Tags: EXTRA CREDIT, Amazing lectures, Clear grading criteria
+
+Review 4 (COP2500C, 2026-05-01):
+She is super nice and fun. Not mandatory attendance and posts lecture that are easy to follow. The midterm and final are easy and not hard if you stopped going to class. She is very nice and gives extra credit.
+Tags: EXTRA CREDIT, Clear grading criteria, Accessible outside class
+
+Review 5 (COP2500C, 2026-05-05):
+Fantastic lecturer and professor. Honestly a great class, I recommend highly.
+Tags: (positive)

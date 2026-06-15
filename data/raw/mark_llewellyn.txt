@@ -1,0 +1,31 @@
+Source: Rate My Professors
+URL: https://www.ratemyprofessors.com/professor/56126
+Professor: Mark Llewellyn
+Department: Computer Science
+School: University of Central Florida
+Overall Quality: 4.6 / 5
+Difficulty: 2.2 / 5
+Would Take Again: 95%
+Tags: Amazing lectures, Caring, Graded by few things
+
+--- Reviews ---
+
+Review 1 (CNT4714, 2025-12-08):
+Project based class, no groups. He is an effort-based grader: as long as you show that you even tried, he will give you credit (not an A). His lectures are online, recorded and in person. Highly recommend going in person. One of the only classes where I actually learned. Highly recommend his class. Easy to reach and very approachable.
+Tags: Amazing lectures, Caring, Accessible outside class
+
+Review 2 (CNT4714, 2025-08-05):
+One of the best professor's at UCF. We were only graded on 4 projects, dealing with GUI interfaces (Java) and having to connect them to MySQL databases (also need some basic html knowledge). Involved a decent amount of coding, but the Professor gave psuedo-code to help us out, and responds to any questions quickly. Zoom option available. 10/10
+Tags: Amazing lectures, Graded by few things, Accessible outside class
+
+Review 3 (CNT4714, 2025-05-14):
+Absolute gem of a professor. There's 4 projects that somewhat build off of the previous one in terms of knowledge. They weren't extremely difficult but they do take a fair amount of time. I hadn't looked at Java for over a year so I didn't remember much but his first project is very forgiving in that sense. Very nice grading. The rubric is clear.
+Tags: Caring, Graded by few things, Accessible outside class
+
+Review 4 (CNT4714, prior semester):
+Mark Lewellyn teaches MANY UCF classes, and he's incredible. For CNT4714, our entire grade came from four projects with no exams. You had weeks to make them, they were fun, and usually 10-25 hours per project. Besides that, there was nothing else to do, so it was a light class, a ton of fun, and the professor was amazing. Take him if you can.
+Tags: Graded by few things
+
+Review 5 (CNT4603, 2025-12-12):
+Simply the best professor and course combination at UCF.
+Tags: Amazing lectures, Clear grading criteria, Caring

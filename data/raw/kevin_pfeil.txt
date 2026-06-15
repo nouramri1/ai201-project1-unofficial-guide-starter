@@ -1,0 +1,30 @@
+Source: Rate My Professors
+URL: https://www.ratemyprofessors.com/professor/2716334
+Professor: Kevin Pfeil
+Department: Computer Science
+School: University of Central Florida
+Overall Quality: 4.6 / 5
+Difficulty: 2.5 / 5
+Would Take Again: 88%
+Tags: Test heavy, Amazing lectures, Caring
+
+--- Reviews ---
+
+Review 1 (COP3223C, 2026-06-05):
+It is not worth taking this course as getting below a 70 on one of the exams gives you a high chance of your final grade being F. The exam average must be at least a 70 or your final grade of the course will be F. The professor is very friendly and funny, but the exam policies are way too strict. I would take COP3223C with literally anyone else.
+Tags: Test heavy, Graded by few things
+
+Review 2 (COP3223C, 2026-05-05):
+Nice guy, poorly structured class. Gives exam reviews that are nothing like the exams. Also will tell you the exams are harder than the reviews (not sure what the point is then?). TA's will give you a 0 for the tiniest mistake on homework and it WILL affect your grade by several points. If you are not already into coding this class will be tough.
+Tags: Tough grader, Test heavy, Graded by few things
+
+Review 3 (COP3223C, 2026-04-29):
+HE is the goat. He gives lots of time to complete the homework and his lectures are super cool. You will pass the class if you go to lecture and do the study guides he gives you.
+Tags: Amazing lectures, Test heavy
+
+Review 4 (COP3223, 2026-05-05):
+He is amazing.
+Tags: EXTRA CREDIT, Amazing lectures, Caring
+
+Review 5 (COP3223C, prior semester):
+Dr. Pfeil was an AMAZING professor. He was always able to provide insight on questions regarding assignments or upcoming exams. I think he prepared his students well for CS1. If he's available for any class you are taking, I HIGHLY recommend it. You got to know your material real good because 60% of the grade is 3 exams.

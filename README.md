@@ -1,162 +1,192 @@
 # The Unofficial Guide — Project 1
 
-> **How to use this template:**
-> Complete each section *after* you've built and tested the corresponding part of your system.
-> Do not write placeholder text — if a section isn't done yet, leave it blank and come back.
-> Every section below is required for submission. One-liners will not receive full credit.
-
 ---
 
 ## Domain
 
-<!-- What topic or category of knowledge does your system cover?
-     Why is this knowledge valuable, and why is it hard to find through official channels?
-     Example: "Student reviews of CS professors at [university] — useful because official
-     course descriptions don't reflect teaching style, exam difficulty, or workload." -->
+This system is a retrieval-augmented guide to student-reported teaching style, exam format, workload, and grading for courses at the University of Central Florida (UCF), based on Rate My Professors reviews. Official course catalogs list prerequisites and topics, but they do not explain how professors actually run exams, whether attendance matters, or how many hours students spend on homework. That information is scattered across individual professor pages and hard to compare without reading dozens of profiles.
 
 ---
 
 ## Document Sources
 
-<!-- List every source you collected documents from.
-     Be specific: include URLs, subreddit names, forum thread titles, or file names.
-     Aim for variety — sources that together cover different subtopics or perspectives. -->
-
 | # | Source | Type | URL or file path |
 |---|--------|------|-----------------|
-| 1 | | | |
-| 2 | | | |
-| 3 | | | |
-| 4 | | | |
-| 5 | | | |
-| 6 | | | |
-| 7 | | | |
-| 8 | | | |
-| 9 | | | |
-| 10 | | | |
+| 1 | Rate My Professors — Kevin Pfeil | Professor reviews | `data/raw/kevin_pfeil.txt` / https://www.ratemyprofessors.com/professor/2716334 |
+| 2 | Rate My Professors — Mark Llewellyn | Professor reviews | `data/raw/mark_llewellyn.txt` / https://www.ratemyprofessors.com/professor/56126 |
+| 3 | Rate My Professors — Paul Gazzillo | Professor reviews | `data/raw/paul_gazzillo.txt` / https://www.ratemyprofessors.com/professor/2425689 |
+| 4 | Rate My Professors — Sarah Angell | Professor reviews | `data/raw/sarah_angell.txt` / https://www.ratemyprofessors.com/professor/1583836 |
+| 5 | Rate My Professors — Jie Lin | Professor reviews | `data/raw/jie_lin.txt` / https://www.ratemyprofessors.com/professor/3129455 |
+| 6 | Rate My Professors — Matthew Russo | Professor reviews | `data/raw/matthew_russo.txt` / https://www.ratemyprofessors.com/professor/2257316 |
+| 7 | Rate My Professors — Heath Martin | Professor reviews | `data/raw/heath_martin.txt` / https://www.ratemyprofessors.com/professor/144315 |
+| 8 | Rate My Professors — Nathan Holic | Professor reviews | `data/raw/nathan_holic.txt` / https://www.ratemyprofessors.com/professor/646084 |
+| 9 | Rate My Professors — Frank Logiudice | Professor reviews | `data/raw/frank_logiudice.txt` / https://www.ratemyprofessors.com/professor/124775 |
+| 10 | Rate My Professors — Paul Lawrence | Professor reviews | `data/raw/paul_lawrence.txt` / https://www.ratemyprofessors.com/professor/2833061 |
+| 11 | Rate My Professors — Christian Heide | Professor reviews | `data/raw/christian_heide.txt` / https://www.ratemyprofessors.com/professor/3083403 |
+| 12 | Rate My Professors — Matthew Chin | Professor reviews | `data/raw/matthew_chin.txt` / https://www.ratemyprofessors.com/professor/222145 |
 
 ---
 
 ## Chunking Strategy
 
-<!-- Describe your chunking approach with enough specificity that someone else could reproduce it.
-     Include:
-     - Chunk size (characters or tokens) and why that size fits your documents
-     - Overlap size and why (or why not) you used overlap
-     - Any preprocessing you did before chunking (e.g., stripping HTML, removing headers)
-     - What your final chunk count was across all documents -->
+**Chunk size:** 256 tokens
 
-**Chunk size:**
+**Overlap:** 50 tokens (~20%)
 
-**Overlap:**
+**Why these choices fit your documents:** Each source file is one professor's Rate My Professors profile with roughly five short reviews (30–150 tokens each). I chunk per professor file so chunks never mix sources. Reviews are split on `Review N (` boundaries first; fixed-token splitting with overlap only applies when a single review exceeds the limit. Each chunk is prefixed with professor name, department, school, and source URL for attribution.
 
-**Why these choices fit your documents:**
-
-**Final chunk count:**
+**Final chunk count:** 60 chunks across 12 professor files
 
 ---
 
 ## Embedding Model
 
-<!-- Name the embedding model you used and explain your choice.
-     Then answer: if you were deploying this system for real users and cost wasn't a constraint,
-     what tradeoffs would you weigh in choosing a different model?
-     Consider: context length limits, multilingual support, accuracy on domain-specific text,
-     latency, and local vs. API-hosted. -->
+**Model used:** `all-MiniLM-L6-v2` via `sentence-transformers`, stored in ChromaDB with cosine distance. It runs locally with no API key and works well on short English review text.
 
-**Model used:**
-
-**Production tradeoff reflection:**
+**Production tradeoff reflection:** For a real deployment I would weigh embedding accuracy on informal student language (larger models like `e5-large` may handle slang better), latency (local MiniLM vs. API round-trips), context length (not critical here but matters for syllabus PDFs), multilingual support (irrelevant for this corpus), and cost at scale (local is free; API embeddings charge per token on re-indexing).
 
 ---
 
 ## Grounded Generation
 
-<!-- Explain how your system enforces grounding — how does it prevent the LLM from answering
-     beyond the retrieved documents?
-     Describe both your system prompt (what instruction you gave the model) and any structural
-     choices (e.g., how you formatted the context, whether you filtered low-relevance chunks).
-     Do not just say "I told it to use the documents" — show the actual instruction or explain
-     the mechanism. -->
-
 **System prompt grounding instruction:**
 
-**How source attribution is surfaced in the response:**
+```
+You MUST follow these rules:
+1. Answer ONLY using facts explicitly stated in the retrieved review excerpts.
+2. Do NOT use general knowledge about universities, professors, or courses.
+3. Do NOT guess or infer policies that are not directly supported by the excerpts.
+4. If the excerpts do not contain enough information, respond with exactly:
+   "I don't have enough information on that."
+5. If student reviews conflict, present both perspectives briefly.
+6. Do NOT include a sources section in your answer — sources are added separately.
+7. Never mention professors, courses, or URLs that do not appear in the excerpts.
+```
+
+Retrieved chunks are passed as labeled excerpts in the user message. Temperature is 0.1. If retrieval is empty or the top match distance exceeds 0.72, the system skips the LLM and returns the decline message programmatically.
+
+**How source attribution is surfaced in the response:** Sources are **programmatically appended** in the Gradio UI's "Retrieved from" box — not generated by the LLM. `format_sources()` deduplicates professor, source file, and URL from chunk metadata after every query.
 
 ---
 
 ## Evaluation Report
 
-<!-- Run your 5 test questions from planning.md through your system and record the results.
-     Be honest — a partially accurate or inaccurate result that you explain well is more
-     valuable than a suspiciously perfect result. -->
+I ran all 5 questions from `planning.md` through `python eval.py` on June 14, 2026.
 
 | # | Question | Expected answer | System response (summarized) | Retrieval quality | Response accuracy |
 |---|----------|-----------------|------------------------------|-------------------|-------------------|
-| 1 | | | | | |
-| 2 | | | | | |
-| 3 | | | | | |
-| 4 | | | | | |
-| 5 | | | | | |
+| 1 | What do students say about Kevin Pfeil's exam grading policy in COP3223C? | ~60% from 3 exams; strict 70% exam-average rule; exam reviews may not match tests | Mixed opinions: exams harder than review sheets; getting below 70 on an exam risks failing; some reviews focus on study guides instead of policy details | Relevant | Partially accurate |
+| 2 | How is Mark Llewellyn's CNT4714 class graded? | Four projects, no exams, 10–25 hrs/project | Grade from four projects, no exams, effort-based grading, clear rubric, ~10–25 hours per project | Relevant | Accurate |
+| 3 | What is Paul Gazzillo's attendance policy for COP3402? | Mandatory attendance, 75% of lectures required | Attendance mandatory; only 75% of lectures required to meet the policy | Relevant | Accurate |
+| 4 | How is Heath Martin's MAC2312 course graded? | 2–3 HW/week, weekly quizzes (2 dropped), 3 midterms + final (final replaces lowest midterm) | 2–3 HW/week, weekly quiz (lowest two dropped), 3 midterms + final (final replaces lowest midterm if higher), tests weighted heavily | Relevant | Accurate |
+| 5 | What teaching style does Paul Lawrence use for CHM2210, and what do students say about the workload? | Flipped classroom, long videos, barely HW, no study guides | Flipped classroom, barely any homework, no study guides; mixed workload views (long videos vs. helpful in-class work) | Relevant | Accurate |
 
 **Retrieval quality:** Relevant / Partially relevant / Off-target  
 **Response accuracy:** Accurate / Partially accurate / Inaccurate
+
+**Out-of-corpus test:** "What do students say about dining halls at UCF?" → **"I don't have enough information on that."** (correct decline; unrelated professor chunks were retrieved but the system did not hallucinate an answer)
 
 ---
 
 ## Failure Case Analysis
 
-<!-- Identify at least one question where retrieval or generation did not work as expected.
-     Write a specific explanation of *why* it failed, tied to a part of the pipeline.
+**Question that failed:** What do students say about Kevin Pfeil's exam grading policy in COP3223C?
 
-     "The answer was wrong" is not an explanation.
+**What the system returned:** The answer mentioned the strict 70% exam-average rule and that exams are harder than review sheets, but it did **not** mention that 60% of the grade comes from 3 exams — even though that fact appears in Review 5 of `kevin_pfeil.txt`.
 
-     "The relevant information was split across a chunk boundary, so retrieval returned
-     only half the context — the model didn't have enough to answer correctly" is an explanation.
+**Root cause (tied to a specific pipeline stage):** **Retrieval + ranking stage.** After keyword reranking, Review 2 (exam reviews don't match tests) ranked above Review 5 (60% of grade from 3 exams). The reranker boosted chunks containing query words like "exam" and "grading" but Review 5 uses "60% of the grade is 3 exams" — a phrasing that scored lower on keyword overlap. The LLM only saw the top-ranked excerpts and omitted the weighting detail.
 
-     "The embedding model treated the professor's nickname as out-of-vocabulary and returned
-     results from an unrelated review" is an explanation. -->
+**What you would change to fix it:** Boost chunks that contain numeric grading breakdowns (percentages, "X% of grade"); or retrieve more chunks (top-k = 7) for exam-policy questions; or add a second retrieval pass specifically for grade-breakdown keywords when the query mentions "grading."
 
-**Question that failed:**
-
-**What the system returned:**
-
-**Root cause (tied to a specific pipeline stage):**
-
-**What you would change to fix it:**
+**Earlier retrieval failure (also documented):** Before adding metadata filtering, the Gazzillo attendance query returned Paul Lawrence as rank 1 because both professors share the first name "Paul" and Lawrence's reviews mention attendance. Fixed with professor-name filtering in `retrieve.py`.
 
 ---
 
 ## Spec Reflection
 
-<!-- Reflect on how planning.md shaped your implementation.
-     Answer both questions with at least 2–3 sentences each. -->
+**One way the spec helped you during implementation:** Writing the chunking strategy and evaluation plan in `planning.md` before coding gave me concrete numbers (256 tokens, 50 overlap, top-k = 5) and five testable questions. When retrieval returned the wrong professor, I could compare results against the expected answers instead of guessing whether the system was "good enough."
 
-**One way the spec helped you during implementation:**
-
-**One way your implementation diverged from the spec, and why:**
+**One way your implementation diverged from the spec, and why:** The spec described pure embedding-based retrieval, but Milestone 4 testing showed that semantic search alone matched the wrong "Paul" and ranked generic grading reviews above professor-specific ones. I added professor/course metadata filtering, keyword reranking, and a distance threshold in `retrieve.py` — changes not in the original spec but necessary to pass the retrieval checkpoint.
 
 ---
 
 ## AI Usage
 
-<!-- Describe at least 2 specific instances where you used an AI tool during this project.
-     For each: what did you give the AI as input, what did it produce, and what did you
-     change, override, or direct differently?
+**Instance 1 — Building ingestion and retrieval (Milestone 3–4)**
 
-     "I used Claude to help me code" is not sufficient.
-     "I gave Claude my Chunking Strategy section from planning.md and asked it to implement
-     chunk_text(). It returned a function using a fixed character split. I overrode the
-     chunk size from 500 to 200 because my documents are short reviews, not long guides." -->
+- *What I gave the AI:* I used **Claude** for guidance. I shared my Chunking Strategy and Retrieval Approach sections from `planning.md`, a sample `data/raw/kevin_pfeil.txt` file, and `requirements.txt`.
+- *What it produced:* Claude helped me draft `ingest.py` (tiktoken chunking, review-boundary splitting, metadata prefixing) and `embed.py` / `retrieve.py` (ChromaDB + `all-MiniLM-L6-v2`).
+- *What I changed or overrode:* I ran `test_retrieval.py` myself and found wrong-professor matches. I added professor/course metadata filtering and keyword reranking in `retrieve.py` on my own after Claude's initial retrieval code did not handle the Paul Gazzillo vs. Paul Lawrence confusion.
 
-**Instance 1**
+**Instance 2 — Generation, UI, and evaluation (Milestone 5–6)**
 
-- *What I gave the AI:*
-- *What it produced:*
-- *What I changed or overrode:*
+- *What I gave the AI:* I used **Claude** again for guidance on the Architecture section, Evaluation Plan, the assignment's Gradio skeleton, and grounding requirements.
+- *What it produced:* Claude helped draft `generate.py`, `query.py`, `app.py`, and `main.py` wiring retrieve → Groq generation.
+- *What I changed or overrode:* I tightened the system prompt so grounding is mandatory (not suggested), moved source attribution into a programmatic "Retrieved from" box in the UI instead of trusting the LLM to cite sources, and customized the Gradio theme (dark green / light pink) and tagline myself.
 
-**Instance 2**
+---
 
-- *What I gave the AI:*
-- *What it produced:*
-- *What I changed or overrode:*
+## How to Run
+
+```bash
+python3 -m venv .venv
+source .venv/bin/activate
+pip install -r requirements.txt
+cp .env.example .env   # add your Groq API key
+
+python ingest.py
+python embed.py
+python app.py          # web UI at http://localhost:7860
+
+# CLI:
+python main.py --cli "How is Mark Llewellyn's CNT4714 class graded?"
+
+# Full eval (all 5 questions):
+python eval.py
+```
+
+---
+
+## Submission Checklist
+
+| Item | Status | Notes |
+|------|--------|-------|
+| `planning.md` complete | Done | Spec written before coding; updated after retrieval debugging |
+| `README.md` complete | Done | All sections filled in above |
+| Pipeline runs end-to-end | Done | `ingest.py` → `embed.py` → `app.py` |
+| 5 eval questions tested | Done | See Evaluation Report; run `python eval.py` to reproduce |
+| Failure case documented | Done | Pfeil exam grading — reranking missed 60%/3-exams detail |
+| AI usage section | Done | Claude used for guidance on Milestones 3–6 |
+| Git commits | **You do this** | At least one commit before M5, one before M6 (see below) |
+| Demo video (3–5 min) | **You do this** | Record and upload per course instructions |
+
+### Demo video script (3–5 minutes)
+
+1. **Intro (30 sec)** — Show `app.py` running at http://localhost:7860. Point out the question box, Answer, and Retrieved from fields.
+
+2. **Good query #1 (45 sec)** — Ask: *"How is Mark Llewellyn's CNT4714 class graded?"* Show answer mentions four projects / no exams. Point to **Retrieved from** citing `mark_llewellyn.txt`.
+
+3. **Good query #2 (45 sec)** — Ask: *"What is Paul Gazzillo's attendance policy for COP3402?"* Show 75% attendance rule. Show source citation.
+
+4. **Good query #3 (45 sec)** — Ask: *"How is Heath Martin's MAC2312 course graded?"* Show quizzes, midterms, final. Show sources.
+
+5. **Failure / struggle (60 sec)** — Ask: *"What do students say about Kevin Pfeil's exam grading policy in COP3223C?"* Narrate: retrieval works but the answer misses that 60% of the grade is 3 exams because keyword reranking ranked other exam reviews higher. Show the Evaluation Report in README.
+
+6. **Out-of-corpus (30 sec)** — Ask: *"What do students say about dining halls at UCF?"* Show it declines with *"I don't have enough information on that."*
+
+7. **Wrap-up (30 sec)** — Briefly scroll through README Evaluation Report and Failure Case Analysis.
+
+### How to submit
+
+1. **Commit your work:**
+   ```bash
+   git add planning.md README.md ingest.py embed.py retrieve.py generate.py query.py app.py main.py eval.py test_retrieval.py requirements.txt data/raw/
+   git commit -m "Complete Project 1: RAG pipeline, evaluation, and documentation"
+   git push
+   ```
+
+2. **Upload demo video** to the platform your course uses (Canvas / YouTube unlisted link / etc.) — check your syllabus for the exact submission link.
+
+3. **Submit the repo link** (and video link if required separately) before the deadline.
+
+4. **Do not commit** `.env` (your Groq API key) — it is already in `.gitignore`.

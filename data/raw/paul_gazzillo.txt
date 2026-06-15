@@ -1,0 +1,31 @@
+Source: Rate My Professors
+URL: https://www.ratemyprofessors.com/professor/2425689
+Professor: Paul Gazzillo
+Department: Computer Science
+School: University of Central Florida
+Overall Quality: 4.9 / 5
+Difficulty: 2.7 / 5
+Would Take Again: 96%
+Tags: Amazing lectures, Clear grading criteria, Lots of homework
+
+--- Reviews ---
+
+Review 1 (COP3402, 2025-12-13):
+Incredible prof. Easily accessible material, extra credit attendance, great lectures, great TAs, all around one of the best CS classes I have taken at UCF. Mostly projects determine your grade, and there is plenty of documentation/ TA and prof support for them. Absolutely would recommend.
+Tags: Amazing lectures, Caring, Accessible outside class
+
+Review 2 (COP3402, 2025-12-13):
+Great modern professor with recorded lectures, course website, and good lectures.
+Tags: Amazing lectures, Lots of homework, Online Savvy
+
+Review 3 (COP3402, 2025-12-11):
+This is the kind of professor that after watching a lecture you just say "wow he REALLY knows what he is talking about". Very chill professor, gives you enough time to do the projects (which are worth most of your grade) and is also very helpful when you ask him a question about the class. Take his class, he is a great professor.
+Tags: Amazing lectures, Clear grading criteria, Respected
+
+Review 4 (COP3402, 2025-12-05):
+This is probably one of the best Professor at UCF. I have never met a more understanding professor. His lectures are good and attendance is mandatory but you only to come 75% of the lectures to meet the attendance requirement. There are 3 exercises and 5 projects (I think) but they are not too hard and he gives tips on how to do them in class.
+Tags: EXTRA CREDIT, Clear grading criteria, Gives good feedback
+
+Review 5 (COP3402, 2025-12-13):
+Goatzillo!
+Tags: (positive)
